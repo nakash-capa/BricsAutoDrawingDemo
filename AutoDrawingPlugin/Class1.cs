@@ -8,5 +8,6 @@ namespace AutoDrawingPlugin
 {
     public class Class1
     {
+
     }
 }
