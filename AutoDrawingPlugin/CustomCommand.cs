@@ -1,5 +1,5 @@
 ﻿using Teigha.Runtime;
-using System.Windows.Forms;
+using AutoDrawingDialog;
 
 namespace AutoDrawingPlugin
 {
@@ -14,7 +14,8 @@ namespace AutoDrawingPlugin
         [CommandMethod("AutoDraw")]  
         public static void AutoDraw()
         {
-            MessageBox.Show("自動作図コマンドが呼び出されました！", "AutoDraw");
+            var dialog = new AutoDrawDialog();
+            dialog.ShowDialog();
         }
     }
 }
