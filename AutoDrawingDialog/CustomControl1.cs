@@ -43,6 +43,7 @@ namespace AutoDrawingDialog
     ///
     ///     <MyNamespace:CustomControl1/>
     ///
+    
     /// </summary>
     public class CustomControl1 : Control
     {
