@@ -14,7 +14,7 @@ namespace AutoDrawingDialog
             // XAMLで定義されたUIを読み込む
             InitializeComponent();
             // ウィンドウが表示されたときに呼ばれるイベントを登録
-            Loaded += Window_Loaded;
+            Loaded += WindowLoaded;
         }
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace AutoDrawingDialog
         /// </summary>
         /// <param name="sender">イベントの送信元（ウィンドウ自身）</param>
         /// <param name="e"></param>
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void WindowLoaded(object sender, RoutedEventArgs e)
         {
             // 部屋1～4までの設定UIを生成
             for (int i = 1; i <= 4; i++)
@@ -67,5 +67,18 @@ namespace AutoDrawingDialog
                 RoomSettingsPanel.Children.Add(group);
             }
         }
+
+        private void OnClickCancel(object sender, RoutedEventArgs e)
+        {
+            // ウィンドウを閉じる
+            this.Close();
+        }
+
+        private void OnClickOK(object sender, RoutedEventArgs e)
+        {
+            // 後で自動作図ロジックをここに実装
+            MessageBox.Show("自動作図を実行します。");
+        }
+
     }
 }
