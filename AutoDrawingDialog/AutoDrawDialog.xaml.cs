@@ -1,6 +1,9 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
-
+using AutoDrawingShared.Models;
+using AutoDrawingShared.Services;
 
 namespace AutoDrawingDialog
 {
@@ -14,7 +17,7 @@ namespace AutoDrawingDialog
             // XAMLで定義されたUIを読み込む
             InitializeComponent();
             // ウィンドウが表示されたときに呼ばれるイベントを登録
-            Loaded += Window_Loaded;
+            Loaded += WindowLoaded;
         }
 
         /// <summary>
@@ -22,7 +25,7 @@ namespace AutoDrawingDialog
         /// </summary>
         /// <param name="sender">イベントの送信元（ウィンドウ自身）</param>
         /// <param name="e"></param>
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void WindowLoaded(object sender, RoutedEventArgs e)
         {
             // 部屋1～4までの設定UIを生成
             for (int i = 1; i <= 4; i++)
@@ -67,5 +70,86 @@ namespace AutoDrawingDialog
                 RoomSettingsPanel.Children.Add(group);
             }
         }
+
+        /// <summary>
+        /// キャンセルボタン押下時の処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnClickCancel(object sender, RoutedEventArgs e)
+        {
+            // ウィンドウを閉じる
+            this.Close();
+        }
+
+        /// <summary>
+        /// ✓ボタン押下時の処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnClickOK(object sender, RoutedEventArgs e)
+        {
+            var roomSettings = GetAllRoomSettings();  // List<RoomSetting> を作る
+
+            // Plugin 側の作図クラスを呼び出す
+            var service = new RoomDrawingService();
+            service.DrawRoomPlan(roomSettings);
+
+            // 自動作図後にウィンドウを閉じる
+            this.Close();
+        }
+
+        private List<RoomSetting> GetAllRoomSettings()
+        {
+            var settings = new List<RoomSetting>();
+
+            int roomIndex = 1;
+
+            foreach (GroupBox group in RoomSettingsPanel.Children)
+            {
+                var panel = group.Content as StackPanel;
+
+                if (panel != null)
+                {
+                    bool hasDoor = false;
+                    bool hasWindow = false;
+                    string direction = "左開き"; // 初期値
+
+                    foreach (var child in panel.Children)
+                    {
+                        if (child is CheckBox cb)
+                        {
+                            if (cb.Content.ToString().Contains("ドア"))
+                                hasDoor = cb.IsChecked == true;
+                            if (cb.Content.ToString().Contains("窓"))
+                                hasWindow = cb.IsChecked == true;
+                        }
+                        else if (child is StackPanel dirPanel)
+                        {
+                            foreach (var radio in dirPanel.Children)
+                            {
+                                if (radio is RadioButton rb && rb.IsChecked == true)
+                                {
+                                    direction = rb.Content.ToString();
+                                }
+                            }
+                        }
+                    }
+
+                    settings.Add(new RoomSetting
+                    {
+                        Index = roomIndex,
+                        HasDoor = hasDoor,
+                        HasWindow = hasWindow,
+                        DoorDirection = direction
+                    });
+
+                    roomIndex++;
+                }
+            }
+
+            return settings;
+        }
+
     }
 }

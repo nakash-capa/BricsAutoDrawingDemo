@@ -89,5 +89,11 @@
   <ItemGroup>
     <Resource Include="Assets\FloorPlanImage.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AutoDrawingShared\AutoDrawingShared.csproj">
+      <Project>{752a7f17-ef44-4b97-8811-f5a16fb65b78}</Project>
+      <Name>AutoDrawingShared</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

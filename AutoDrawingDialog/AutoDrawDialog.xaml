@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AutoDrawingDialog"
         mc:Ignorable="d"
-        Title="AutoDrawDialog" Height="450" Width="800">
+        Title="AutoDrawDialog" Height="600" Width="1000">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*" />
@@ -14,14 +14,29 @@
 
         <!-- 左: 図面画像 -->
         <Image Source="pack://application:,,,/AutoDrawingDialog;component/Assets/FloorPlanImage.png"
-           Stretch="Uniform"
-           Margin="10"
-           Grid.Column="0" />
+               Stretch="Uniform"
+               Margin="10"
+               Grid.Column="0" />
 
-        <!-- 右: 設定パネル -->
-        <ScrollViewer Grid.Column="1" Margin="10">
-            <StackPanel x:Name="RoomSettingsPanel" Orientation="Vertical" />
-        </ScrollViewer>
+        <!-- 右: 設定＆ボタンを上下に分ける -->
+        <Grid Grid.Column="1" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <!-- 設定欄（可変） -->
+                <RowDefinition Height="Auto" />
+                <!-- ボタン欄（固定） -->
+            </Grid.RowDefinitions>
+
+            <!-- 設定項目エリア（スクロール可） -->
+            <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+                <StackPanel x:Name="RoomSettingsPanel" Orientation="Vertical" />
+            </ScrollViewer>
+
+            <!-- ボタン配置エリア -->
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                <Button Content="キャンセル" Width="100" Margin="5" Click="OnClickCancel"/>
+                <Button Content="✓ 自動作図" Width="100" Margin="5" Click="OnClickOK"/>
+            </StackPanel>
+        </Grid>
     </Grid>
-
 </Window>
